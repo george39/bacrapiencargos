@@ -1,4 +1,7 @@
 var express = require('express');
+var jwt = require('jsonwebtoken');
+
+var mdAutentication = require('../middleware/autentication');
 
 var app = express();
 var bcrypt = require('bcryptjs');
@@ -33,10 +36,13 @@ app.get('/', (req, res, next ) => {
 });
 
 
+
+
+
 // ================================================
 // ACTUALIZAR UN USUARIO 
 // ================================================
-app.put('/:id', (req, res) => {
+app.put('/:id', mdAutentication.verificaToken, (req, res) => {
 
     var id = req.params.id;
     var body = req.body;
@@ -90,7 +96,7 @@ app.put('/:id', (req, res) => {
 // ================================================
 // CREAR UN NUEVO USUARIO 
 // ================================================
-app.post('/', (req, res) => {
+app.post('/', mdAutentication.verificaToken, (req, res) => {
     var body = req.body;
 
     var user = new User({
@@ -114,7 +120,8 @@ app.post('/', (req, res) => {
 
         res.status(201).json({
             ok: true,
-            user: userSave
+            user: userSave,
+            usuariotoken: req.user
         });
 
     });
@@ -125,7 +132,7 @@ app.post('/', (req, res) => {
 // ================================================
 // BORRAR UN USUARIO 
 // ================================================
-app.delete('/:id', (req, res) => {
+app.delete('/:id', mdAutentication.verificaToken, (req, res) => {
 
     var id = req.params.id;
 
