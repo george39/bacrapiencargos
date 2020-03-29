@@ -19,6 +19,8 @@ var orderClientRoutes = require('./routes/order-client');
 var providerRoutes = require('./routes/provider');
 var orderProviderRoutes = require('./routes/order-provider');
 var productRoutes = require('./routes/product');
+var searchRoutes = require('./routes/search');
+var uploadRoute = require('./routes/upload');
 
 
 // Conexion a la base de datos
@@ -34,6 +36,8 @@ app.use('/pedido-cliente', orderClientRoutes);
 app.use('/proveedor', providerRoutes);
 app.use('/pedido-proveedor', orderProviderRoutes);
 app.use('/productos', productRoutes);
+app.use('/buscar', searchRoutes);
+app.use('/upload', uploadRoute);
 app.use('/', appRoutes);
 
 

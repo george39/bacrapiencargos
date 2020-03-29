@@ -47,6 +47,7 @@ app.post('/', mdAutentication.verificaToken, (req, res) => {
 app.get('/', mdAutentication.verificaToken, (req, res) => {
 
     OrderProvider.find({})
+        .populate('provider_id')
         .exec(
             (err, orderProvider) => {
 

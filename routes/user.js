@@ -16,7 +16,12 @@ var User = require('../models/user');
 
 app.get('/', (req, res, next ) => {
 
+    var desde = req.query.desde || 0;
+    desde = Number(desde);
+
     User.find({}, 'name surname address email date role')
+        .skip(desde)
+        .limit(5)
         .exec(    
             (err, usuarios) => {
                 if(err) {
@@ -27,10 +32,15 @@ app.get('/', (req, res, next ) => {
                     });
                 }
 
-                res.status(200).json({
-                    ok: true,
-                    usuarios: usuarios
+                User.count({}, (err, conteo) => {
+
+                    res.status(200).json({
+                        ok: true,
+                        usuarios: usuarios,
+                        total: conteo
+                    });
                 });
+
             });
     
 });

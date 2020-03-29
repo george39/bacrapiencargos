@@ -13,6 +13,8 @@ var app = express();
 app.get('/', mdAutentication.verificaToken, (req, res, next) => {
 
     OrderClient.find({})
+        .populate('userId')
+        .populate('product_id')
         .exec(
             (err, order) => {
                 if(err) {
@@ -60,6 +62,7 @@ app.put('/:id', mdAutentication.verificaToken, (req, res) => {
         }
 
         order.userId = body.userId;
+        order.product_id = body.product_id;
         order.detail = body.detail;
         order.price = body.price;
 
@@ -90,6 +93,7 @@ app.post('/', mdAutentication.verificaToken, (req, res) => {
 
     var order = new OrderClient({
         userId: body.userId,
+        product_id: body.product_id,
         detail: body.detail,
         price: body.price
 
