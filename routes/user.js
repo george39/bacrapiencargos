@@ -80,6 +80,7 @@ app.put('/:id', mdAutentication.verificaToken, (req, res) => {
         address = body.address;
         email = body.email;        
         role = body.role;
+        image = body.image;
 
 
         user.save((err, userSave) => {
@@ -115,7 +116,8 @@ app.post('/', mdAutentication.verificaToken, (req, res) => {
         address: body.address,
         email: body.email,
         password: bcrypt.hashSync( body.password, 10 ),
-        role: body.role
+        role: body.role,
+        image: body.image
     });
 
     user.save((err, userSave) => {
