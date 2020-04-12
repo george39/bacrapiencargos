@@ -118,7 +118,7 @@ app.post('/', mdAutentication.verificaToken, (req, res) => {
 });
 
 // ================================================
-// BORRAR UN PEDIDO 
+// BORRAR UN PEDIDO ESPECIFICO
 // ================================================
 app.delete('/:id', mdAutentication.verificaToken, (req, res) => {
     var id = req.params.id;
