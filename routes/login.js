@@ -12,7 +12,7 @@ app.post('/', (req, res) => {
 
     var body = req.body;
 
-    User.findOne({email: body.email}, (err, userBd) => {
+    User.findOne({ email: body.email }, (err, userBd) => {
 
         if (err) {
             return res.status(500).json({
@@ -23,7 +23,7 @@ app.post('/', (req, res) => {
         }
 
         if (!userBd) {
-            return res.satatus(400).json({
+            return res.status(400).json({
                 ok: false,
                 message: 'Credenciales incorrectas',
                 errors: err
@@ -40,7 +40,7 @@ app.post('/', (req, res) => {
 
         // Crear un token
         userBd.password = ':)';
-        var token = jwt.sign({user: userBd}, SEED, {expiresIn: 14400}); // 4 horas
+        var token = jwt.sign({ user: userBd }, SEED, { expiresIn: 1440000000 }); // 4 horas
 
 
         res.status(200).json({

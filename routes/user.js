@@ -6,7 +6,7 @@ var mdAutentication = require('../middleware/autentication');
 var app = express();
 var bcrypt = require('bcryptjs');
 
-var User = require('../models/user'); 
+var User = require('../models/user');
 
 
 
@@ -14,7 +14,7 @@ var User = require('../models/user');
 // OBTENER TODOS LOS USUARIOS 
 // ================================================
 
-app.get('/', (req, res, next ) => {
+app.get('/', (req, res, next) => {
 
     var desde = req.query.desde || 0;
     desde = Number(desde);
@@ -22,11 +22,11 @@ app.get('/', (req, res, next ) => {
     User.find({}, 'name surname address email date role')
         .skip(desde)
         .limit(5)
-        .exec(    
+        .exec(
             (err, usuarios) => {
-                if(err) {
+                if (err) {
                     return res.status(200).json({
-                        ok:true,
+                        ok: true,
                         mensaje: 'Error cargando usuario',
                         errors: err
                     });
@@ -42,7 +42,7 @@ app.get('/', (req, res, next ) => {
                 });
 
             });
-    
+
 });
 
 
@@ -59,7 +59,7 @@ app.put('/:id', mdAutentication.verificaToken, (req, res) => {
 
     User.findById(id, (err, user) => {
 
-        if(err) {
+        if (err) {
             return res.status(500).json({
                 ok: false,
                 message: 'Error al buscar usuario',
@@ -67,24 +67,24 @@ app.put('/:id', mdAutentication.verificaToken, (req, res) => {
             });
         }
 
-        if(!user) {
+        if (!user) {
             return res.status(400).json({
                 ok: false,
                 message: 'El usuario con id' + id + 'no existe',
-                errors: {message: 'No existe un usuario con ese id'}
+                errors: { message: 'No existe un usuario con ese id' }
             });
         }
 
         user.name = body.name;
-        user.surname = body.surname;        
+        user.surname = body.surname;
         address = body.address;
-        email = body.email;        
+        email = body.email;
         role = body.role;
         image = body.image;
 
 
         user.save((err, userSave) => {
-            if(err) {
+            if (err) {
                 return res.status(400).json({
                     ok: false,
                     message: 'Error al actualizar usuario',
@@ -95,19 +95,19 @@ app.put('/:id', mdAutentication.verificaToken, (req, res) => {
             userSave.password = ':)';
             res.status(200).json({
                 ok: true,
-                user: userSave 
+                user: userSave
             });
         });
     });
 
-    
+
 });
 
 
 // ================================================
 // CREAR UN NUEVO USUARIO 
 // ================================================
-app.post('/', mdAutentication.verificaToken, (req, res) => {
+app.post('/', (req, res) => {
     var body = req.body;
 
     var user = new User({
@@ -115,14 +115,14 @@ app.post('/', mdAutentication.verificaToken, (req, res) => {
         surname: body.surname,
         address: body.address,
         email: body.email,
-        password: bcrypt.hashSync( body.password, 10 ),
+        password: bcrypt.hashSync(body.password, 10),
         role: body.role,
         image: body.image
     });
 
     user.save((err, userSave) => {
 
-        if(err) {
+        if (err) {
             return res.status(400).json({
                 ok: false,
                 message: 'Error al crear usuario',
@@ -162,7 +162,7 @@ app.delete('/:id', mdAutentication.verificaToken, (req, res) => {
             return res.status(400).json({
                 ok: false,
                 message: 'No existe un usuario con ese id',
-                errors: {message: 'No existe un usuario con ese id'}
+                errors: { message: 'No existe un usuario con ese id' }
             });
         }
 
